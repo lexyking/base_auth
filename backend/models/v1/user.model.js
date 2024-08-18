@@ -18,7 +18,7 @@ const userSchema = mongoose.Schema({
   lastLogin: {
     type: Date,
     default: Date.now,
-    require: true
+    require: false
   },
   role: {
     type: String,
@@ -38,12 +38,12 @@ const userSchema = mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    require: true
+    require: false
   },
   updatedAt: {
     type: Date,
     default: Date.now,
-    require: true
+    require: false
   },
   isVerified: {
     type: Boolean,
@@ -53,8 +53,10 @@ const userSchema = mongoose.Schema({
   resetPasswordExpiresAt: Date,
   resetPasswordTokenUsed: Boolean,
 
-  verificationExpiresAt: Date,
-  verificationTokenCreated: Date,
+  verificationToken: String,
+  verificationTokenExpiresAt: Date,
+  verificationTokenCreatedAt: Date,
+
   verificationTokenUsed: Boolean,
   verificationTokenUsedAt: Date,
   verificationTokenFailedAttempts: Number,
@@ -69,7 +71,6 @@ const userSchema = mongoose.Schema({
   twoFactorAuthBlockedUntil: Date,
   twoFactorAuthBlocked: Boolean,
   twoFactorAuthBlockedReason: String,
-  verificationToken: String,
 
 }, {timestamps: true})
 

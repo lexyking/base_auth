@@ -1,10 +1,10 @@
 import express from 'express'
-import { logoutController, singUpController, loginController } from '../../controllers/v1/auth.controllers.js'
+import { logout, singUp, login } from '../../controllers/v1/auth.controllers.js'
 
 const router = express.Router()
 
-router.get('/signup', singUpController)
-router.get('/login', loginController)
-router.get('/logout', logoutController)
+router.post('/signup', singUp)
+router.post('/login', login)
+router.post('/logout', logout)
 
 export default router
