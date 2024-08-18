@@ -1,7 +1,7 @@
-import express from 'express'
 import { User } from '../../models/v1/user.model.js'
 import bcrypt from 'bcryptjs'
 import { generateVerificationToken, generateTokenAndSetCookie } from '../../helpers/utils.js'
+import { sendVerificationEmail } from '../../mailtrap/emails.js'
 
 export const singUp = async (req,res) => {
   const {name, email, password} = req.body
@@ -13,8 +13,6 @@ export const singUp = async (req,res) => {
     
     const hashedPassword = await bcrypt.hash(password, 10)
     const [verificationToken, verificationTokenCreatedAt, verificationTokenExpiresAt ] = generateVerificationToken()
-
-    console.log({ verificationToken, verificationTokenCreatedAt, verificationTokenExpiresAt})
     
     const newUser = new User({
       name,
@@ -25,9 +23,11 @@ export const singUp = async (req,res) => {
       verificationTokenExpiresAt
     })
     
+    await newUser.save()
+
     generateTokenAndSetCookie(res, newUser._id)
 
-    await newUser.save()
+    await sendVerificationEmail(newUser, verificationToken)
 
     res.status(201).json({
       message: 'User created successfully',
